@@ -1,2 +1,3 @@
 # cafe-management-system
-Web based cafe ordering system
+Web based cafe ordering system where individual table of a cafe will be given with particular QR code. A customer will scan the QR code and will be able to browse the menu of that cafe ,order any time and finally will be able to make online payment. There is another interface for the cook to see which order to prepare for which table and after preparing the order he will mark it as done thereby the customer will get a notification to collect the food from the booth. Finally the admin panel will see what all are the orders in a day has been made and how much profit he has gain in a month. This is how this system is supposed to work.
+

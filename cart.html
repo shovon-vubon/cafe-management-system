@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<script defer src="./injectScript.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="globals.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+
+<div class="nav-bar">
+        <div class="buttons">
+          <a href="admin_dashboard.html" class="back-button"><img class="arrow" src="img/arrow.png" /></a>
+          <a href="homepage.html" class="scan-button"><img class="scan" src="img/scan.png" /></a>
+          <button class="profile-button" onclick="toggleProfileDropdown()"><img class="user" src="img/user.png" /></button>
+          <div class="user-wrapper"><img class="user" src="img/power.png" /></div>
+        </div>
+        <div id="profileDropdown" class="profile-dropdown">
+          <div class="dropdown-header">
+            <div class="dropdown-user-icon">
+              <img class="dropdown-user" src="img/user.png" />
+            </div>
+            <div class="dropdown-user-info">
+              <div class="dropdown-username">Table no.</div>
+              <div class="dropdown-email">table-21</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <div class="cart-page">
+      <img class="chips" src="https://c.animaapp.com/mjqepxxkiP7qLZ/img/chips.png" />
+      <img class="chips" src="https://c.animaapp.com/mjqepxxkiP7qLZ/img/chips-1.png" />
+      <img class="group" src="https://c.animaapp.com/mjqepxxkiP7qLZ/img/group-1.png" />
+      
+      <div class="frame">
+        <div class="menu-item">
+           <div class="order-1"></div>
+           <div class="rectangle-2">
+            </div>
+  
+          <img
+            class="front-view-tasty"
+            src="https://c.animaapp.com/mjqehbjb07P98X/img/front-view-tasty-meat-burger-with-cheese-salad-dark-background-1.png"
+          />
+          <div class="text-wrapper">Bhuna Khichuri</div>
+          <img class="add" src="https://c.animaapp.com/mjqehbjb07P98X/img/add-1.png" />
+          <img class="bin" src="https://c.animaapp.com/mjqehbjb07P98X/img/bin--1--1.png" />
+          <div class="price-BDT">Price: BDT.&nbsp;&nbsp;60</div>
+          <div class="text-wrapper-2">Quantity: 1</div>
+        </div>
+        <div class="amount">
+          <img class="vector" src="https://c.animaapp.com/mjqehbjb07P98X/img/vector.svg" />
+          <img class="vector-2" src="https://c.animaapp.com/mjqehbjb07P98X/img/vector-1.svg" />
+          <a href="checkout.html"><div class="text-wrapper-3">Checkout</div></a>
+          <a href="foodmenu.html"><div class="text-wrapper-4">Continue Shopping</div></a>
+
+        </div>
+      </div>
+
+      
+      <div class="logo"><a href="index.html"><img class="logom" src="https://c.animaapp.com/mjqehbjb07P98X/img/logom-1.png" /></a></div>
+    
+      <footer class="footer">
+        <div class="t-c">
+          <div class="group-2">
+            <div class="terms-conditions">Terms &amp; Conditions</div>
+            <p class="p">© . All rights reserved</p>
+            <div class="text-wrapper-11">Contact us</div>
+          </div>
+        </div>
+      </footer>
+    
+    </div>
+
+  </body>
+
+  <script>
+    function toggleProfileDropdown() {
+      const dropdown = document.getElementById('profileDropdown');
+      dropdown.classList.toggle('active');
+    }
+
+    function logout() {
+      alert('Logging out...');
+    }
+
+    document.addEventListener('click', function(event) {
+      const dropdown = document.getElementById('profileDropdown');
+      const profileButton = document.querySelector('.profile-button');
+      if (dropdown && profileButton && !profileButton.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.classList.remove('active');
+      }
+    });
+  </script>
+</html>

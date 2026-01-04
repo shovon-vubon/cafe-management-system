@@ -7,45 +7,13 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="add-menu">
-      <img class="chips" src="https://c.animaapp.com/mjqemspvCihHiP/img/chips.png" />
-      <img class="group" src="https://c.animaapp.com/mjqepxxkiP7qLZ/img/group-1.png" />
-      <div class="logo"><a href="index.html"><img class="logom" src="img/logo-1.png" /></a></div>
-      <div class="login-card">
-        <form action="" method="post" enctype="multipart/form-data">
-          <div class="rectangle"></div>
-          
-          <!-- Photo Upload Section -->
-          <label for="file-upload" style="cursor: pointer;">
-            <div class="rectangle-2"></div>
-            <img class="image" src="img/image- 1.png" id="preview-image" />
-            <div class="text-wrapper-2">Upload Photo</div>
-          </label>
-          <input type="file" id="file-upload" name="photo" style="display: none;" accept="image/*" />
 
-          <!-- Form Inputs -->
-          <div class="text-wrapper-3">Name</div>
-          <input type="text" class="rectangle-3" name="name" />
-
-          <div class="text-wrapper-4">Type</div>
-          <input type="text" class="rectangle-4" name="type" />
-
-          <div class="text-wrapper-5">Description</div>
-          <textarea class="rectangle-7" name="description"></textarea>
-
-          <div class="text-wrapper-6">Price</div>
-          <input type="text" class="rectangle-5" name="price" />
-
-          <!-- Save Button -->
-          <button type="submit" class="rectangle-6" style="border: none; cursor: pointer;">
-            <div class="text-wrapper-7" style="position: static; width: 100%; margin-top: 15px;">Save</div>
-          </button>
-        </form>
-      </div>
+     <header>
+     <div class="logo"><a href="index.html"><img class="logom" src="img/logo-1.png" /></a></div>
      <div class="nav-bar">
         <div class="buttons">
           <button class="back-button" onclick="window.history.back()"><img class="arrow" src="img/arrow.png" /></button>
-          <a href="homepage.html" class="scan-button"><img class="scan" src="img/scan button.png" /></a>
+          <a href="homepage.html" class="scan-button"><img class="scan" src="img/scan.png" /></a>
           <button class="profile-button" onclick="toggleProfileDropdown()"><img class="user" src="img/user.png" /></button>
         </div>
         <div id="profileDropdown" class="profile-dropdown">
@@ -61,16 +29,46 @@
           <button class="logout-button" onclick="logout()">Logout</button>
         </div>
       </div>
-      <footer class="footer">
+    </header>
+
+    <div class="admin-dashboard">
+      <img class="burger-frenchfry" src="img/burger+frenchfry.png" />
+      <div class="dashboard">
+       <div class="dashboard-buttons">
+        <a href="menu.html" class="menu-button">
+          <img class="ellipse" src="img/menu.png" />
+          <div class="text-wrapper">Menu</div>
+        </a>
+        <a href="orders.html" class="orders-button">
+          <img class="ellipse" src="img/orders.png" />
+          <div class="div">Orders</div>
+        </a>
+        <a href="payment.html" class="payment-button">
+          <img class="ellipse" src="img/payment.png" />
+          <div class="text-wrapper-2">Payment</div>
+        </a>
+        <a href="table.html" class="table-button">
+          <img class="ellipse" src="img/table.png" />
+          <div class="text-wrapper-3">Tables</div>
+        </a>
+        <a href="analytics.html" class="analytics-button">
+          <img class="ellipse" src="img/analytics.png" />
+          <div class="text-wrapper-4">Analytics</div>
+        </a>
+       </div>
+      </div>
+     
+       <footer class="footer">
         <div class="t-c">
-          <div class="group-2">
+          <div class="group">
             <div class="terms-conditions">Terms &amp; Conditions</div>
             <p class="p">© . All rights reserved</p>
-            <div class="text-wrapper-11">Contact us</div>
+            <div class="text-wrapper-5">Contact us</div>
           </div>
         </div>
-      </footer>
+       </footer>
 
+      </div>
     </div>
   </body>
   <script>

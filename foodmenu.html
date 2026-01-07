@@ -5,6 +5,11 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="globals.css" />
     <link rel="stylesheet" href="style.css" />
+    <style>
+      /* Visual treatment for unavailable items */
+      .unavailable { filter: grayscale(80%) opacity(0.6); }
+      .text-wrapper-unavailable { color: #b00; font-weight: bold; margin-top: 6px; }
+    </style>
   </head>
   <body>
 
@@ -44,7 +49,7 @@
           <a href="cart.html"><img class="add-to-cart" src="https://c.animaapp.com/mju5sd5pKIUbOV/img/add-to-cart-1-7.png" /></a>
           <img
             class="front-view-tasty"
-            src="https://c.animaapp.com/mju5sd5pKIUbOV/img/front-view-tasty-meat-burger-with-cheese-salad-dark-background-1-1.png"
+            src="img/khichuri.png"
           />
           <div class="text-wrapper">Bhuna Khichuri</div>
           <div class="text-wrapper-2">Price: BDT. 60</div>
@@ -58,10 +63,10 @@
           <a href="cart.html"><img class="add-to-cart" src="https://c.animaapp.com/mju5sd5pKIUbOV/img/add-to-cart-1-7.png" /></a>
           <img
             class="front-view-tasty"
-            src="https://c.animaapp.com/mju5sd5pKIUbOV/img/front-view-tasty-meat-burger-with-cheese-salad-dark-background-1-1.png"
+            src="img/coffee.png"
           />
-          <div class="text-wrapper">Bhuna Khichuri</div>
-          <div class="text-wrapper-2">Price: BDT. 60</div>
+          <div class="text-wrapper">Coffee</div>
+          <div class="text-wrapper-2">Price: BDT. 80</div>
         </div>
         
         <div class="menu-item">
@@ -72,10 +77,10 @@
           <a href="cart.html"><img class="add-to-cart" src="https://c.animaapp.com/mju5sd5pKIUbOV/img/add-to-cart-1-7.png" /></a>
           <img
             class="front-view-tasty"
-            src="https://c.animaapp.com/mju5sd5pKIUbOV/img/front-view-tasty-meat-burger-with-cheese-salad-dark-background-1-1.png"
+            src="img/noodles.png"
           />
-          <div class="text-wrapper">Bhuna Khichuri</div>
-          <div class="text-wrapper-2">Price: BDT. 60</div>
+          <div class="text-wrapper">Noodles</div>
+          <div class="text-wrapper-2">Price: BDT. 40</div>
         </div>
 
         <div class="menu-item">
@@ -86,9 +91,9 @@
           <a href="cart.html"><img class="add-to-cart" src="https://c.animaapp.com/mju5sd5pKIUbOV/img/add-to-cart-1-7.png" /></a>
           <img
             class="front-view-tasty"
-            src="https://c.animaapp.com/mju5sd5pKIUbOV/img/front-view-tasty-meat-burger-with-cheese-salad-dark-background-1-1.png"
+            src="img/french-fries.png"
           />
-          <div class="text-wrapper">Bhuna Khichuri</div>
+          <div class="text-wrapper">French Fries</div>
           <div class="text-wrapper-2">Price: BDT. 60</div>
         </div> 
         
@@ -100,10 +105,10 @@
           <a href="cart.html"><img class="add-to-cart" src="https://c.animaapp.com/mju5sd5pKIUbOV/img/add-to-cart-1-7.png" /></a>
           <img
             class="front-view-tasty"
-            src="https://c.animaapp.com/mju5sd5pKIUbOV/img/front-view-tasty-meat-burger-with-cheese-salad-dark-background-1-1.png"
+            src="img/drinks.png"
           />
-          <div class="text-wrapper">Bhuna Khichuri</div>
-          <div class="text-wrapper-2">Price: BDT. 60</div>
+          <div class="text-wrapper">Coke</div>
+          <div class="text-wrapper-2">Price: BDT. 30</div>
         </div> 
         
         <div class="menu-item">
@@ -114,10 +119,10 @@
           <a href="cart.html"><img class="add-to-cart" src="https://c.animaapp.com/mju5sd5pKIUbOV/img/add-to-cart-1-7.png" /></a>
           <img
             class="front-view-tasty"
-            src="https://c.animaapp.com/mju5sd5pKIUbOV/img/front-view-tasty-meat-burger-with-cheese-salad-dark-background-1-1.png"
+            src="img/cake.png"
           />
-          <div class="text-wrapper">Bhuna Khichuri</div>
-          <div class="text-wrapper-2">Price: BDT. 60</div>
+          <div class="text-wrapper">Cake</div>
+          <div class="text-wrapper-2">Price: BDT. 15</div>
         </div> 
         
       </div>
@@ -150,6 +155,102 @@
         dropdown.classList.remove('active');
       }
     });
+    // Render items added via add_menu (stored in localStorage)
+    (function(){
+      const key = 'qrcafe_menu_items';
+      let items = [];
+      try { items = JSON.parse(localStorage.getItem(key) || '[]'); } catch(e){ items = []; }
+
+      const container = document.querySelector('.all-menu');
+      if (!container) return;
+
+      // Avoid duplicating existing static items by name
+      const existingNames = new Set(Array.from(container.querySelectorAll('.text-wrapper')).map(n => n.textContent.trim()));
+
+      items.forEach(it => {
+        if (!it || !it.name) return;
+        if (existingNames.has(it.name)) return;
+
+        const mi = document.createElement('div');
+        mi.className = 'menu-item';
+        mi.dataset.name = it.name;
+
+        const bg = document.createElement('img');
+        bg.className = 'img';
+        bg.src = 'https://c.animaapp.com/mju5sd5pKIUbOV/img/rectangle-3-7.svg';
+
+        const rect2 = document.createElement('div'); rect2.className = 'rectangle-2';
+        const rect3 = document.createElement('div'); rect3.className = 'rectangle-3';
+        const ell = document.createElement('div'); ell.className = 'ellipse-5';
+
+        const cartLink = document.createElement('a'); cartLink.href = 'cart.html';
+        const cartImg = document.createElement('img'); cartImg.className = 'add-to-cart'; cartImg.src = 'https://c.animaapp.com/mju5sd5pKIUbOV/img/add-to-cart-1-7.png';
+        cartLink.appendChild(cartImg);
+
+        const front = document.createElement('img'); front.className = 'front-view-tasty'; front.src = it.image || 'img/image-1.png';
+
+        const title = document.createElement('div'); title.className = 'text-wrapper'; title.textContent = it.name;
+        const price = document.createElement('div'); price.className = 'text-wrapper-2'; price.textContent = 'Price: BDT. ' + (it.price || '');
+
+        mi.appendChild(bg);
+        mi.appendChild(rect2);
+        mi.appendChild(rect3);
+        mi.appendChild(ell);
+        mi.appendChild(cartLink);
+        mi.appendChild(front);
+        mi.appendChild(title);
+        mi.appendChild(price);
+
+        if (it.outOfStock) {
+          mi.classList.add('unavailable');
+          const badge = document.createElement('div'); badge.className = 'text-wrapper-unavailable'; badge.textContent = 'Unavailable';
+          mi.appendChild(badge);
+        }
+
+        container.appendChild(mi);
+      });
+    })();
+    // Add-to-cart when user clicks the ellipse-5 element on any menu-item
+    (function(){
+      const container = document.querySelector('.all-menu');
+      if (!container) return;
+      container.addEventListener('click', function(e){
+        const btn = e.target.closest('.add-to-cart');
+if (!btn) return;
+
+e.preventDefault();   // stop page jump
+const menuItem = btn.closest('.menu-item');
+
+        if (!menuItem) return;
+
+        const nameEl = menuItem.querySelector('.text-wrapper');
+        const priceEl = menuItem.querySelector('.text-wrapper-2');
+        const imgEl = menuItem.querySelector('.front-view-tasty');
+        const name = nameEl ? nameEl.textContent.trim() : '';
+        let priceRaw = priceEl ? priceEl.textContent.trim() : '';
+        // extract numeric part if formatted like 'Price: BDT. 60'
+        const m = priceRaw.match(/([0-9]+(?:\.[0-9]+)?)/);
+        const price = m ? m[0] : (priceRaw || '');
+        const image = imgEl ? imgEl.src : '';
+
+        if (!name) {
+          // nothing to add
+          window.location.href = 'cart.html';
+          return;
+        }
+
+        const cartKey = 'qrcafe_cart';
+        let cart = [];
+        try { cart = JSON.parse(localStorage.getItem(cartKey) || '[]'); } catch(e){ cart = []; }
+
+        const existing = cart.find(i => i.name === name);
+        if (existing) existing.quantity = (existing.quantity || 1) + 1;
+        else cart.push({ name, price, image, quantity: 1 });
+
+        try { localStorage.setItem(cartKey, JSON.stringify(cart)); } catch(e){}
+        window.location.href = 'cart.html';
+      });
+    })();
   </script>
 
   </body>

@@ -43,6 +43,13 @@
             <div class="text-wrapper-2">Upload Photo</div>
           </label>
           <input type="file" id="file-upload" name="photo" style="display: none;" accept="image/*" />
+          <!-- Image picker from project img folder -->
+          <div style="margin-top:8px; visibility: hidden;">
+            <label for="imageSelect" class="text-wrapper-4"></label>
+            <select id="imageSelect" style="display:block; margin-top:6px; padding:6px;">
+              <option value=""></option>
+            </select>
+          </div>
 
           <!-- Form Inputs -->
           <div class="text-wrapper-3">Name</div>
@@ -76,6 +83,74 @@
     </div>
   </body>
   <script>
+    (function(){
+      // Hardcoded image list (files in /img). Adjust if you add/remove images.
+      const images = [
+        'tehari.png','drinks.png','coffee.png','noodles.png','khichuri.png','cake.png','samosa.png','french-fries.png','burger+frenchfry.png','chips.png','menu.png','image- 1.png'
+      ];
+
+      const select = document.getElementById('imageSelect');
+      const preview = document.getElementById('preview-image');
+      images.forEach(name => {
+        const opt = document.createElement('option');
+        opt.value = 'img/' + name;
+        opt.textContent = name;
+        select.appendChild(opt);
+      });
+
+      select.addEventListener('change', () => {
+        if (select.value) preview.src = select.value;
+      });
+
+      // On file input change, show preview and clear select
+      const fileInput = document.getElementById('file-upload');
+      fileInput.addEventListener('change', e => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const url = URL.createObjectURL(file);
+        preview.src = url;
+        select.value = '';
+      });
+
+      // Handle form submit: save to localStorage and redirect to menu
+      const form = document.querySelector('form');
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        const name = form.querySelector('input[name="name"]').value.trim();
+        const type = form.querySelector('input[name="type"]').value.trim();
+        const description = form.querySelector('textarea[name="description"]').value.trim();
+        const price = form.querySelector('input[name="price"]').value.trim();
+
+        if (!name) { alert('Please enter a name'); return; }
+
+        const key = 'qrcafe_menu_items';
+        const raw = localStorage.getItem(key);
+        const items = raw ? JSON.parse(raw) : [];
+
+        function saveAndRedirect(imageSrc){
+          if (!items.some(i => i.name === name)) {
+            items.push({ name, type, description, price, image: imageSrc });
+            localStorage.setItem(key, JSON.stringify(items));
+          }
+          window.location.href = 'menu.html';
+        }
+
+        // If a file was uploaded, convert to base64 data URL first
+        if (fileInput.files && fileInput.files[0]) {
+          const file = fileInput.files[0];
+          const reader = new FileReader();
+          reader.onload = function(evt){
+            saveAndRedirect(evt.target.result);
+          };
+          reader.readAsDataURL(file);
+          return;
+        }
+
+        // Otherwise use selected image or preview src
+        const imageSrc = select.value || preview.src || '';
+        saveAndRedirect(imageSrc);
+      });
+    })();
     function toggleProfileDropdown() {
       const dropdown = document.getElementById('profileDropdown');
       dropdown.classList.toggle('active');

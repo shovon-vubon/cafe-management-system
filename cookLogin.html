@@ -4,6 +4,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="utf-8" />
     <link rel="stylesheet" href="style.css" />
+    <style>
+      .error-message {
+        display: none;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #ff4757 0%, #ee5a6f 100%);
+        color: white;
+        padding: 16px 24px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(255, 71, 87, 0.3);
+        font-family: "Inria Sans", Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        z-index: 1000;
+        animation: slideIn 0.3s ease-out;
+        max-width: 400px;
+        word-wrap: break-word;
+      }
+
+      .error-message.show {
+        display: block;
+      }
+
+      .error-message .close-error {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 0;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .error-message .close-error:hover {
+        opacity: 0.8;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(400px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+    </style>
   </head>
   <body>
     <div class="cook-login-page">
@@ -13,10 +69,65 @@
       <div class="login-card"></div>
       <div class="text-wrapper">LOG IN</div>
       <div class="buttons">
-        <input class="input-field" type="text" placeholder="UserID" />
-        <input class="input-field" type="password" placeholder="Password" />
-        <a href="cook_dashboard.html" class="submit-btn">Log In</a>
+        <input class="input-field" id="cookUserID" type="text" placeholder="UserID" />
+        <input class="input-field" id="cookPassword" type="password" placeholder="Password" />
+        <button class="submit-btn" onclick="authenticateCook()" style="border: none; cursor: pointer; text-decoration: none;">Log In</button>
       </div>
     </div>
+
+    <!-- Error Message -->
+    <div id="errorMessage" class="error-message">
+      <button class="close-error" onclick="closeError()">&times;</button>
+      <span id="errorText"></span>
+    </div>
+
+    <script>
+      // Cook/Chef credentials database
+      const cookUsers = {
+        "chef1": "chef123",
+        "chef2": "chef456",
+        "cook": "cook123"
+      };
+
+      function authenticateCook() {
+        const userID = document.getElementById('cookUserID').value.trim();
+        const password = document.getElementById('cookPassword').value.trim();
+
+        if (!userID || !password) {
+          showError('Please enter both UserID and Password');
+          return;
+        }
+
+        if (cookUsers[userID] && cookUsers[userID] === password) {
+          // Authentication successful
+          localStorage.setItem('cookUser', userID);
+          window.location.href = 'cook_dashboard.html';
+        } else {
+          showError('Invalid UserID or Password');
+          document.getElementById('cookPassword').value = '';
+        }
+      }
+
+      function showError(message) {
+        const errorDiv = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        errorText.textContent = message;
+        errorDiv.classList.add('show');
+        setTimeout(() => {
+          errorDiv.classList.remove('show');
+        }, 4000);
+      }
+
+      function closeError() {
+        document.getElementById('errorMessage').classList.remove('show');
+      }
+
+      // Allow Enter key to submit
+      document.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+          authenticateCook();
+        }
+      });
+    </script>
   </body>
 </html>

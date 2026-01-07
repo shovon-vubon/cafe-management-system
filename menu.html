@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="globals.css" />
     <link rel="stylesheet" href="styleguide.css" />
     <link rel="stylesheet" href="style.css" />
+    <style>
+      /* Visual treatment for unavailable items */
+      .unavailable { filter: grayscale(80%) opacity(0.6); }
+      .text-wrapper-unavailable { color: #b00; font-weight: bold; margin-top: 6px; }
+    </style>
   </head>
   <body>
 
@@ -66,47 +71,43 @@
       <div class="all-menu">
         <div class="group">
           <div class="rectangle">
+          <a href="update_menu.html">
 
           <div class="item">
-            <img class="rounded-rectangle" src="https://c.animaapp.com/mjqrn9gdiLSAUM/img/rounded-rectangle-26.png" />
+            <img class="rounded-rectangle" src="img/tehari.png" />
             <div class="text-wrapper">Chicken Tehari</div>
           </div>
+           </a>
+
+          <a href="update_menu.html">
 
           <div class="item">
-            <img class="rounded-rectangle" src="https://c.animaapp.com/mjqrn9gdiLSAUM/img/rounded-rectangle-26.png" />
-            <div class="text-wrapper">Chicken Tehari</div>
+            <img class="rounded-rectangle" src="img/drinks.png" />
+            <div class="text-wrapper">Coke</div>
           </div>
-          
+          </a>
+          <a href="update_menu.html">
           <div class="item">
-            <img class="rounded-rectangle" src="https://c.animaapp.com/mjqrn9gdiLSAUM/img/rounded-rectangle-26.png" />
-            <div class="text-wrapper">Chicken Tehari</div>
+            <img class="rounded-rectangle" src="img/coffee.png" />
+            <div class="text-wrapper">Coffee</div>
           </div>
-          
+          </a>
+
+          <a href="update_menu.html"></a>
           <div class="item">
-            <img class="rounded-rectangle" src="https://c.animaapp.com/mjqrn9gdiLSAUM/img/rounded-rectangle-26.png" />
-            <div class="text-wrapper">Chicken Tehari</div>
+            <img class="rounded-rectangle" src="img/noodles.png" />
+            <div class="text-wrapper">Chicken Noodles</div>
           </div>
+          </a>
           
+          <a href="update_menu.html">
           <div class="item">
-            <img class="rounded-rectangle" src="https://c.animaapp.com/mjqrn9gdiLSAUM/img/rounded-rectangle-26.png" />
-            <div class="text-wrapper">Chicken Tehari</div>
+            <img class="rounded-rectangle" src="img/khichuri.png" />
+            <div class="text-wrapper">Khichuri</div>
           </div>
-          
-          <div class="item">
-            <img class="rounded-rectangle" src="https://c.animaapp.com/mjqrn9gdiLSAUM/img/rounded-rectangle-26.png" />
-            <div class="text-wrapper">Chicken Tehari</div>
-          </div>
-          
-          <div class="item">
-            <img class="rounded-rectangle" src="https://c.animaapp.com/mjqrn9gdiLSAUM/img/rounded-rectangle-26.png" />
-            <div class="text-wrapper">Chicken Tehari</div>
-          </div>
-          
-          <div class="item">
-            <img class="rounded-rectangle" src="https://c.animaapp.com/mjqrn9gdiLSAUM/img/rounded-rectangle-26.png" />
-            <div class="text-wrapper">Chicken Tehari</div>
-          </div>
-          
+          </a>
+
+
           
           </div>
         </div>
@@ -149,5 +150,64 @@
         dropdown.classList.remove('active');
       }
     });
+    
+    (function(){
+      const key = 'qrcafe_menu_items';
+      const raw = localStorage.getItem(key);
+      let items = [];
+      try { items = raw ? JSON.parse(raw) : []; } catch(e){ items = []; }
+
+      const rectangle = document.querySelector('.all-menu .group .rectangle');
+      if (!rectangle) return;
+
+      // Remove any existing dynamic children so we can re-render cleanly
+      // Keep static items if present but avoid duplicates by name
+      const existingTitles = new Set(Array.from(rectangle.querySelectorAll('.text-wrapper')).map(n => n.textContent.trim()));
+      // Render stored items (name, price, out-of-stock)
+      items.forEach(it => {
+        if (!it || !it.name) return;
+        if (existingTitles.has(it.name)) return;
+        const item = document.createElement('div');
+        item.className = 'item';
+        item.dataset.name = it.name;
+
+        const img = document.createElement('img');
+        img.className = 'rounded-rectangle';
+        img.src = it.image || 'img/image-1.png';
+        img.alt = it.name || '';
+
+        const title = document.createElement('div');
+        title.className = 'text-wrapper';
+        title.textContent = it.name || 'Unnamed';
+
+        const price = document.createElement('div');
+        price.className = 'text-wrapper-price';
+        price.textContent = it.price ? it.price : '';
+
+        item.appendChild(img);
+        item.appendChild(title);
+        item.appendChild(price);
+
+        if (it.outOfStock) {
+          item.classList.add('unavailable');
+          const badge = document.createElement('div');
+          badge.className = 'text-wrapper-unavailable';
+          badge.textContent = 'Unavailable';
+          item.appendChild(badge);
+        }
+
+        rectangle.appendChild(item);
+      });
+
+      // Delegate clicks on items to navigate to update_menu.html with item name
+      rectangle.addEventListener('click', function(e){
+        const itemEl = e.target.closest('.item');
+        if (!itemEl) return;
+        const name = itemEl.dataset.name || (itemEl.querySelector('.text-wrapper') && itemEl.querySelector('.text-wrapper').textContent.trim());
+        if (!name) return;
+        try { localStorage.setItem('qrcafe_selected_item', JSON.stringify({ name })); } catch(_){ }
+        window.location.href = 'update_menu.html?name=' + encodeURIComponent(name);
+      });
+    })();
   </script>
 </html>
